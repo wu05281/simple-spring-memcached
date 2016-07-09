@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.code.ssm.api.ParameterValueKeyProvider;
 import com.google.code.ssm.api.ReadThroughSingleCache;
 
 @RestController
@@ -19,7 +20,7 @@ public class Application implements EmbeddedServletContainerCustomizer {
 	
 	@RequestMapping("/")
 	String home() {
-		getInfo();
+		getInfo("test");
 		return "hello world!";
 	}
 
@@ -31,8 +32,9 @@ public class Application implements EmbeddedServletContainerCustomizer {
 		  container.setPort(1003);  
 	}
 	
-	@ReadThroughSingleCache(namespace = "test", expiration = 30000)
-    private void getInfo() {
+	@ReadThroughSingleCache(namespace = "Alpha", expiration = 30)  
+    private String getInfo(@ParameterValueKeyProvider final String key) {
     	System.out.println("ª∫¥Ê√ª”–√¸÷–");
+    	return "ª∫¥Ê≤‚ ‘2016-07-09";
     }
 }

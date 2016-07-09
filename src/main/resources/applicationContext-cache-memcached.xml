@@ -19,7 +19,7 @@
 		</property>
 		<property name="addressProvider">
 			<bean class="com.google.code.ssm.config.DefaultAddressProvider">
-				<property name="address" value="192.168.211.80:11211" />
+				<property name="address" value="192.168.211.80:11211,192.168.211.81:11211" />
 			</bean>
 		</property>
 		<property name="configuration">
