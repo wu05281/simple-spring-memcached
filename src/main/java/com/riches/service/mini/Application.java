@@ -1,32 +1,26 @@
 package com.riches.service.mini;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.code.ssm.api.ReadThroughSingleCache;
 
 @RestController
 @SpringBootApplication
 @EnableAutoConfiguration
+@ImportResource({"classpath:applicationContext-cache-memcached.xml"}) //加入memached的xml文件   
 public class Application implements EmbeddedServletContainerCustomizer {  
-
-	@Autowired
-	@Qualifier("primaryJdbcTemplate")
-	private JdbcTemplate jdbcTemplate;
 	
 	@RequestMapping("/")
 	String home() {
-
-		String sql = "select count(ua_ub_id_n) from User_Address where isactive = 1 and ua_ub_id_n = 151130101110000281";
-		int i = jdbcTemplate.queryForObject(sql, Integer.class);
-//		System.out.println(testRegistryService.hello("ok"));
-		return "test query" + i;
+		getInfo();
+		return "hello world!";
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -36,4 +30,9 @@ public class Application implements EmbeddedServletContainerCustomizer {
 	public void customize(ConfigurableEmbeddedServletContainer container) {
 		  container.setPort(1003);  
 	}
+	
+	@ReadThroughSingleCache(namespace = "test", expiration = 30000)
+    private void getInfo() {
+    	System.out.println("缓存没有命中");
+    }
 }
