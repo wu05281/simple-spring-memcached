@@ -1,5 +1,6 @@
 package com.riches.service.mini;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,18 +10,18 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.code.ssm.api.ParameterValueKeyProvider;
-import com.google.code.ssm.api.ReadThroughSingleCache;
-
 @RestController
 @SpringBootApplication
 @EnableAutoConfiguration
 @ImportResource({"classpath:applicationContext-cache-memcached.xml"}) //加入memached的xml文件   
 public class Application implements EmbeddedServletContainerCustomizer {  
+
+	@Autowired
+	private MemachedService memachedService;
 	
 	@RequestMapping("/")
 	String home() {
-		getInfo("test");
+		memachedService.getInfo("test");
 		return "hello world!";
 	}
 
@@ -29,12 +30,8 @@ public class Application implements EmbeddedServletContainerCustomizer {
 	}
 	//更改默认启动端口号
 	public void customize(ConfigurableEmbeddedServletContainer container) {
-		  container.setPort(1003);  
+		container.setPort(1003);  
 	}
+
 	
-	@ReadThroughSingleCache(namespace = "Alpha", expiration = 30)  
-    private String getInfo(@ParameterValueKeyProvider final String key) {
-    	System.out.println("缓存没有命中");
-    	return "缓存测试2016-07-09";
-    }
 }
