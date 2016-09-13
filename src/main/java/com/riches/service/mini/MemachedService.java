@@ -12,4 +12,13 @@ public class MemachedService {
 		System.out.println("缓存没有命中");
 		return "缓存测试2016-07-09";
 	}
+	
+	@ReadThroughSingleCache(namespace="test", expiration=30)
+	public User getUser() {
+		System.out.println("缓存没有命中");
+		User user = new User();
+		user.setId(1111L);
+		user.setName("test124");
+		return user;
+	}
 }
