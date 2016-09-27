@@ -21,7 +21,7 @@ public class Application implements EmbeddedServletContainerCustomizer {
 	
 	@RequestMapping("/")
 	String home() {
-		memachedService.getUser();
+		memachedService.getInfo("testKey", "extra");
 		return "hello world!";
 	}
 

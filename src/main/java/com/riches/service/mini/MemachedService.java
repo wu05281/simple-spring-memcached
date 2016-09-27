@@ -8,7 +8,7 @@ import com.google.code.ssm.api.ReadThroughSingleCache;
 @Service
 public class MemachedService {
 	@ReadThroughSingleCache(namespace = "test", expiration = 30000)
-	public String getInfo(@ParameterValueKeyProvider final String key) {
+	public String getInfo(@ParameterValueKeyProvider final String key, String extra) {
 		System.out.println("ª∫¥Ê√ª”–√¸÷–");
 		return "ª∫¥Ê≤‚ ‘2016-07-09";
 	}
